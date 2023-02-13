@@ -1,7 +1,7 @@
 import storage from "./storage";
 
 export default class ui{
-    static site(){
+    static loadPage(){
         ui.header();
     }
     static header(){
