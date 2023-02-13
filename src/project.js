@@ -27,4 +27,7 @@ export default class project{
             return ;
         this.tasks=this.tasks.filter((t)=> taskName!==t.getName());
     }
+    getTask(taskName){
+        return this.tasks.find((t)=>t.getName()===taskName);
+    }
 }
