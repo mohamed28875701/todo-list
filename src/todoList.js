@@ -3,7 +3,10 @@ import task from "./task";
 export default class todoList{
     constructor(){
         this.projects=[];
-        this.projects.push(new project("Home"));
+        let p =new project("Home");
+        p.addTask(new task("hey","23/23/2004","dddd","medium"));
+        this.projects.push(p);
+
         this.projects.push(new project("Gym"));
         this.projects.push(new project("uni"));
     }
