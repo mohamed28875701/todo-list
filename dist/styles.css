@@ -1,3 +1,6 @@
+:root{
+    --shadow:0 4px 8px rgb(0,0,0,.5);
+}
 *{
     margin: 0;
     list-style: none;
@@ -7,7 +10,7 @@
 #content{
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 4fr;
     grid-template-rows: 6rem 1fr;
     
 }
@@ -44,7 +47,7 @@
 }
 #add{
     background-color: #4d414a;
-    border-radius: 50%;
+    border-radius: 100%;
     height: 3rem;
     width: 3rem;
     border: none;
@@ -55,9 +58,74 @@
     justify-content: center;
     align-items: center;
     transition: all .2s ease-in-out;
+    outline: none;
     
 }
 #add:hover{
-    box-shadow: 0 4px 8px rgb(0,0,0,.5);
+    box-shadow: var(--shadow);
     transform: scale(1.2);
+    border: none;
+}
+.proj{
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+.proj:hover{
+    transform: scale(1.2);
+    
+}
+#tasks{
+    background-color: #FAF9F6;
+}
+#tasklist{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+}
+#task{
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: .5rem;
+    background-color: #c0c0c0;
+    border-radius: .8rem;
+    border-top-left-radius: .4rem;
+    border-bottom-left-radius: .4rem;
+    color: #4d414a;
+    font-size: 1.2rem;
+    border-left: 4px solid;
+    transition: all .2s ease-in-out;
+}
+#task:hover{
+    box-shadow: var(--shadow);
+    transform: scale(1.01);
+}
+#div{
+    display: flex;
+    gap: 12px;
+}
+#delete,#details{
+    background-color: inherit;
+    border-radius: 4px;
+    font-size: 1.05rem;
+    width: 5.5rem;
+    border:1px solid #3ba395;    
+    transition: all .3s ease-in-out;
+}
+#delete{
+    border-color:crimson;
+    color: crimson;
+    outline: none;
+}
+#delete:hover{
+    background-color: crimson;
+    color: #c0c0c0;
+}
+#details{
+    color: #3ba395;
+}
+#details:hover{
+    background-color: #3ba395;
+    color: #c0c0c0;
 }
