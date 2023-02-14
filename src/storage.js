@@ -17,7 +17,7 @@ export default class storage{
         return list;
     }
     static addProject(proj){
-        const list=Storage.getTodoList()
+        const list=storage.getTodoList()
         list.addProject(proj);
         storage.saveTodoList(list);
     }
