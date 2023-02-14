@@ -1,2 +1,5 @@
 import ui from "./interface";
-ui.loadPage();
+
+document.addEventListener("DOMContentLoaded",ui.load);
+
+
