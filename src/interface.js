@@ -7,6 +7,7 @@ export default class ui{
         ui.header(); 
         ui.nav();
         ui.tasks();
+        ui.loadTasks();
         
     }
     static header(){
@@ -55,18 +56,22 @@ export default class ui{
         const wrapper=document.createElement("div");
         wrapper.setAttribute("id","tasks");
         const ul=document.createElement("ul");
+        ul.setAttribute("id","tasklist");
         wrapper.appendChild(ul);
         const content=document.getElementById("content");
         content.appendChild(wrapper);
     }
     static loadTasks(){
         const active=document.querySelector("[data-status='active']");
-        const tasks=document.getElementById("tasks");
+        const tasks=document.getElementById("tasklist");
+        
+        storage.getTodoList().getProject(active.textContent).getTasks().map((t)=>tasks.appendChild(ui.createTask(t)));
     }
     static createTask(task){
         const li=document.createElement("li");
         li.setAttribute("id","task");
         const div=document.createElement("div");
+        div.setAttribute("id","div");
         const name=document.createElement("p");
         name.textContent=task.getName();
         const details=document.createElement("button");
@@ -74,6 +79,9 @@ export default class ui{
         const del=document.createElement("button");
         details.setAttribute("id","details");
         del.setAttribute("id","delete");
+        del.textContent="delete";
+        details.textContent="details";
+        date.textContent=task.getDueDate();
         li.appendChild(name);
         div.appendChild(details);
         div.appendChild(date);
@@ -88,6 +96,7 @@ export default class ui{
         else{
             li.style.borderLeftColor="red";
         }
+        return li;
         
     }
 }
