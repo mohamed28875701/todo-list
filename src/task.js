@@ -10,5 +10,7 @@ export default class task{
     getDueDate(){return this.duedate}
     setDueDate(date){this.duedate=date}
     setDescription(desc){this.description=desc}
+    getDescription(){return this.description}
     setPriority(pr){this.priority=this.priority}
+    getPriority(){return this.priority}
 }
