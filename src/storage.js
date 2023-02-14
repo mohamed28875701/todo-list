@@ -9,7 +9,7 @@ export default class storage{
     static getTodoList(){
         const list=Object.assign(new todoList(),JSON.parse(localStorage.getItem("todolist"))) ;
         list.setProjects(
-            list.getProjects().map((proj)=> Object.assign(new project(),project))
+            list.getProjects().map((proj)=> Object.assign(new project(),proj))
         )
         list.getProjects().forEach((proj)=> proj.setTasks(
             proj.getTasks().map((t)=> Object.assign(new task(),t))
