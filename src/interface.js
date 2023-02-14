@@ -9,6 +9,7 @@ export default class ui{
         ui.tasks();
         ui.loadTasks();
         
+        
     }
     static header(){
         const wrapper=document.createElement("div");
@@ -28,6 +29,7 @@ export default class ui{
         const add=document.createElement("button");
         add.setAttribute("id","add");
         add.textContent="+";
+        add.addEventListener("click",ui.createAddModal);
         ui.loadProject(projList);
         wrapper.appendChild(projList);
         wrapper.appendChild(add);
@@ -36,14 +38,14 @@ export default class ui{
 
     }
     static loadProject(list){
-        list.innerHTML="";
+        list.textContent="";
         storage.getTodoList().getProjects().map((proj)=> list.appendChild(ui.createProj(proj.getName())));
         
     }
     static createProj(projName){
         const li=document.createElement("li");
         li.setAttribute("data-status","inactive");
-        
+        li.addEventListener("click",ui.selectProject);
         li.textContent=`${projName}`;
         if(li.textContent==="Home"){
             li.setAttribute("data-status","active");
@@ -64,8 +66,61 @@ export default class ui{
     static loadTasks(){
         const active=document.querySelector("[data-status='active']");
         const tasks=document.getElementById("tasklist");
-        
         storage.getTodoList().getProject(active.textContent).getTasks().map((t)=>tasks.appendChild(ui.createTask(t)));
+    }
+    static createAddModal(){
+        const wrapper=document.createElement("div");
+        wrapper.setAttribute("id","addmodal");
+        const sidebar=document.createElement("div");
+        const project=document.createElement("button");
+        const todo=document.createElement("button");
+        sidebar.setAttribute("id","side");
+        project.setAttribute("id","addproj");
+        project.textContent="Add Project";
+        todo.textContent="Add ToDo"
+        todo.setAttribute("id","addtodo");
+        sidebar.appendChild(project);
+        sidebar.appendChild(todo);
+        wrapper.appendChild(sidebar);
+        wrapper.appendChild(ui.projectForm());
+        document.getElementById("content").style="transition:all .3s ease-in-out";
+        document.getElementById("content").style.filter="blur(8px)"
+        document.body.appendChild(wrapper);
+        
+        
+    }
+    static projectForm(){
+        const wrapper=document.createElement("div");
+        const form=document.createElement("form");
+        const name=document.createElement("input");
+        const sub=document.createElement("button");
+        
+        sub.textContent="Save";
+        sub.setAttribute("id","sub");
+        sub.setAttribute("type","submit");
+        name.placeholder="project name i.e gym";
+        wrapper.setAttribute("id","project-form");
+        name.setAttribute("id","project-name-input");
+        name.setAttribute("type","text");
+        name.setAttribute("minlength","1");
+        name.setAttribute("maxlength","10");
+        name.name="project-name-input";
+        name.required=true;
+        form.appendChild(name);
+        form.appendChild(sub);
+        wrapper.appendChild(form);
+        sub.addEventListener("click",ui.saveProject);
+        return wrapper;
+    }
+    static saveProject(e){
+        e.preventDefault();
+        const name=document.getElementById("project-name-input");
+        storage.addProject(new project(name.value));
+        const m=document.getElementById("addmodal");
+        m.remove();
+        const content=document.getElementById("content");
+        content.style.filter="";
+        ui.loadProject(document.getElementById("projlist"));
     }
     static createTask(task){
         const li=document.createElement("li");
@@ -98,5 +153,13 @@ export default class ui{
         }
         return li;
         
+    }
+    static selectProject(e){
+        const ul=document.getElementById("tasklist");
+        ul.textContent="";
+        const old=document.querySelector("[data-status='active']");
+        old.setAttribute("data-status","inactive");
+        e.target.setAttribute("data-status","active");
+        ui.loadTasks();
     }
 }
