@@ -162,8 +162,16 @@
     padding: 4px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
 }
-#project-form{
+#addproj:hover,#addtodo:hover{
+    transform: scale(1.1);
+}
+#addproj:focus,#addtodo:focus{
+    transform: scale(1.15);
+}
+#project-form,#todo-form{
     flex-grow: 1;
     
 }
@@ -173,7 +181,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
-#project-name-input{
+#project-name-input,#todo-name-input,#todo-desc{
     outline: none;
     height: 3rem;
     font-size: 1.5rem;
@@ -183,7 +191,7 @@
     padding: 1rem;
     
 }
-#sub{
+#sub,#save-task{
     height: 2.5rem;
     width: 20%;
     margin: 2rem;
@@ -194,10 +202,81 @@
     font-size: 1.2rem;
     background-color: #4d414a;
     transition: all .2s ease-in-out;
+    cursor: pointer;
 
 }
-#sub:hover{
+#sub:hover,#save-task:hover{
     outline: none;
     transform: scale(1.1);
     box-shadow: var(--shadow);
+}
+#todo-form>form{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+#holder{
+    display: flex;
+    margin: 1rem;
+    margin-top: auto;
+    align-items: center;
+    gap: 1rem;
+}
+#low,#high,#medium{
+    padding: .5rem 1rem;
+    width: 70px;
+    border-radius: .5rem;
+    border: 1px solid;
+    text-align: center;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+}
+#low{
+    color: #3ba395;
+    
+}
+#medium{
+    color: orange;
+}
+#high{
+    color: crimson;
+}
+#low:hover{
+    color: #e4e8e5;
+    background-color: #3ba395;
+}
+#medium:hover{
+    color: #e4e8e5;
+    background-color: orange;
+}
+#high:hover{
+    color: #e4e8e5;
+    background-color: crimson;
+}
+#date-input{
+    appearance: none;
+    background-color: inherit;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+}
+#empty-title,#proj-delete-li{
+    text-align: center;
+}
+#tasklist > h2{
+    color: #4d414a;
+}
+#delete-project{
+    width: 20%;
+    padding:.5rem 1rem;
+    font-size: 1rem;
+    color: crimson;
+    border:1px solid;background-color: inherit;
+    border-radius:.6rem ;
+    transition: all .1s ease-in-out;
+    
+}
+#delete-project:hover{
+    background-color: crimson;;
+    color: #FAF9F6;
 }
