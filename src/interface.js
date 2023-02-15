@@ -227,6 +227,7 @@ export default class ui{
         del.textContent="delete";
         del.addEventListener("click",ui.deleteTask);
         details.textContent="details";
+        details.addEventListener("click",ui.details);
         date.textContent=task.getDueDate();
         li.appendChild(name);
         div.appendChild(details);
@@ -255,8 +256,13 @@ export default class ui{
     }
     static closeModals(e){
         if(e.key==="Escape"){
-            const rem=document.getElementById("addmodal");
-            rem.remove();
+            
+            if(document.getElementById("addmodal")!==null){
+                document.getElementById("addmodal").remove();
+            }
+            
+            if(document.getElementById("details-modal")!==null)
+                document.getElementById("details-modal").remove();
             document.getElementById("content").style.filter="";
         }
     }
@@ -280,6 +286,8 @@ export default class ui{
     }
     static deleteProject(e){
         const active=document.querySelector("[data-status='active']");
+        if(active.textContent==="main")
+            return;
         document.getElementById("projlist").firstElementChild.setAttribute("data-status","active");
         storage.deleteProject(active.textContent);
         ui.loadProject(document.getElementById("projlist"));
@@ -291,5 +299,26 @@ export default class ui{
         
         storage.deleteTask(document.querySelector("[data-status='active']").textContent,taskName);
         ui.loadTasks();
+    }
+    static details(e){
+        
+        const proj=document.querySelector("[data-status='active']");
+        const projj=storage.getTodoList().getProject(proj.textContent);
+        const task=projj.getTask(e.target.parentElement.parentElement.firstChild.textContent);
+        const wrapper=document.createElement("div");
+        const name=document.createElement("p");
+        name.textContent=`${task.getName()}`
+        name.id="details-title";
+        const projname=document.createElement("p");
+        projname.textContent=`Project:${document.querySelector("[data-status='active']").textContent}`
+        const dateelement=document.createElement("p");
+        dateelement.textContent=`Duedate:${task.getDueDate()}`;
+        wrapper.appendChild(name)
+        wrapper.appendChild(projname)
+        wrapper.appendChild(dateelement);
+        wrapper.setAttribute("id","details-modal");
+        document.body.appendChild(wrapper);
+        document.getElementById("content").style.filter="blur(8px)";
+        
     }
 }
