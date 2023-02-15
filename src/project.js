@@ -25,7 +25,11 @@ export default class project{
     deleteTask(taskName){
         if(!this.contains(taskName))
             return ;
-        this.tasks=this.tasks.filter((t)=> taskName!==t.getName());
+        this.tasks=this.tasks.filter((t)=> t.getName()!==taskName);
+        
+            
+                
+        
     }
     getTask(taskName){
         return this.tasks.find((t)=>t.getName()===taskName);
