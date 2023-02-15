@@ -225,6 +225,7 @@ export default class ui{
         details.setAttribute("id","details");
         del.setAttribute("id","delete");
         del.textContent="delete";
+        del.addEventListener("click",ui.deleteTask);
         details.textContent="details";
         date.textContent=task.getDueDate();
         li.appendChild(name);
@@ -286,6 +287,9 @@ export default class ui{
         
     }
     static deleteTask(e){
-        const task=e.target.parentElement.parentElement.firstChild.textContent;
+        const taskName=e.target.parentElement.parentElement.firstChild.textContent;
+        
+        storage.deleteTask(document.querySelector("[data-status='active']").textContent,taskName);
+        ui.loadTasks();
     }
 }
