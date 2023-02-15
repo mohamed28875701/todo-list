@@ -32,6 +32,9 @@ export default class project{
         
     }
     getTask(taskName){
-        return this.tasks.find((t)=>t.getName()===taskName);
+        for(let i = 0;i!==this.tasks.length;i++){
+            if(this.tasks[i].getName()===taskName)
+                return this.tasks[i];
+        }
     }
 }
