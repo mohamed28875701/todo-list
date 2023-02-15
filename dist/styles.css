@@ -280,3 +280,19 @@
     background-color: crimson;;
     color: #FAF9F6;
 }
+#details-modal{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width:20%;
+    background-color: #e4e8e5;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    color: #4d414a;
+}
+#details-title{
+    font-size: 2rem;
+}
