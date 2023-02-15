@@ -8,7 +8,7 @@ export default class ui{
         ui.nav();
         ui.tasks();
         ui.loadTasks();
-        
+        document.addEventListener("keydown",ui.closeModals);
         
     }
     static header(){
@@ -65,8 +65,31 @@ export default class ui{
     }
     static loadTasks(){
         const active=document.querySelector("[data-status='active']");
-        const tasks=document.getElementById("tasklist");
+        const tasks=document.getElementById("tasklist");    
+        tasks.textContent="";
         storage.getTodoList().getProject(active.textContent).getTasks().map((t)=>tasks.appendChild(ui.createTask(t)));
+        
+        if(storage.getTodoList().getProject(active.textContent).getTasks().length===0){
+            const title=document.createElement("h2");
+                const del=document.createElement("button");
+                const li =document.createElement("li");
+                li.id="empty-title";
+                const il =document.createElement("li");
+                il.id="proj-delete-li";
+                li.appendChild(title);
+                il.appendChild(del);
+                del.id="delete-project";
+                del.textContent="delete project?";
+                title.textContent="Wow ,Such Empty";
+                del.addEventListener("click",ui.deleteProject);
+                tasks.appendChild(li);
+                tasks.appendChild(il);
+        }
+        
+            
+            
+                
+            
     }
     static createAddModal(){
         const wrapper=document.createElement("div");
@@ -74,6 +97,8 @@ export default class ui{
         const sidebar=document.createElement("div");
         const project=document.createElement("button");
         const todo=document.createElement("button");
+        project.addEventListener("click",ui.loadProjectForm);
+        todo.addEventListener("click",ui.loadToDoForm)
         sidebar.setAttribute("id","side");
         project.setAttribute("id","addproj");
         project.textContent="Add Project";
@@ -89,12 +114,77 @@ export default class ui{
         
         
     }
+    static toDoForm(){
+        const wrapper=document.createElement("div");
+        wrapper.setAttribute("id","todo-form");
+        const form=document.createElement("form");
+        const name=document.createElement("input");
+        const desc=document.createElement("input");
+        const div=document.createElement("div");
+        div.id="holder";
+        name.id="todo-name-input";
+        name.maxLength="25";
+        name.required=true;
+        name.placeholder="todo name i.e wear clothes";
+        desc.id="todo-desc";
+        const low=document.createElement("div");
+        low.textContent="low";
+        low.id="low";
+        
+        const medium=document.createElement("div");
+        medium.textContent="medium";
+        medium.id="medium";
+        const high=document.createElement("div");
+        high.textContent="high";
+        high.id="high"
+        low.setAttribute("data-toggle","off");
+        medium.setAttribute("data-toggle","off");
+        high.setAttribute("data-toggle","off");
+        const sub=document.createElement("button");
+        sub.id="save-task";
+        sub.textContent="save";
+        sub.type="submit";
+        const date=document.createElement("input");
+        date.id="date-input";
+        date.type="date";
+        desc.placeholder="i.e shirt,pants...";
+        low.onclick=ui.getPriority;
+        medium.onclick=ui.getPriority;
+        high.onclick=ui.getPriority;
+        sub.addEventListener("click",ui.saveTask)
+        form.appendChild(name)
+        form.appendChild(desc)
+        form.appendChild(div);
+        div.appendChild(low)
+        div.appendChild(medium)
+        div.appendChild(high)
+        div.appendChild(date);
+        div.appendChild(sub);
+        wrapper.appendChild(form)
+        
+        return wrapper;
+    }
+    static saveTask(e){
+        e.preventDefault();
+        const name=document.getElementById("todo-name-input").value;
+        const dueDate=document.getElementById("date-input").value;
+        const desc=document.getElementById("todo-desc").value;
+        const priority=document.querySelector("[data-toggle='on']").textContent;
+        storage.addTask(document.querySelector("[data-status='active']").textContent,new task(name,dueDate,desc,priority));
+        ui.loadTasks();
+        const m=document.getElementById("addmodal");
+        m.remove();
+        const content=document.getElementById("content");
+        content.style.filter="";
+    }
+    static getPriority(e){
+        e.target.setAttribute("data-toggle","on");
+    }
     static projectForm(){
         const wrapper=document.createElement("div");
         const form=document.createElement("form");
         const name=document.createElement("input");
         const sub=document.createElement("button");
-        
         sub.textContent="Save";
         sub.setAttribute("id","sub");
         sub.setAttribute("type","submit");
@@ -161,5 +251,41 @@ export default class ui{
         old.setAttribute("data-status","inactive");
         e.target.setAttribute("data-status","active");
         ui.loadTasks();
+    }
+    static closeModals(e){
+        if(e.key==="Escape"){
+            const rem=document.getElementById("addmodal");
+            rem.remove();
+            document.getElementById("content").style.filter="";
+        }
+    }
+    static loadProjectForm(){
+        if(document.getElementById("addmodal").firstChild.nextSibling.id==="project-form")
+            return;
+        else{
+            document.getElementById("addmodal").firstChild.nextSibling.remove();
+            document.getElementById("addmodal").appendChild(ui.projectForm());
+        }
+        
+    }
+    static loadToDoForm(){
+        if(document.getElementById("addmodal").firstChild.nextSibling.id==="todo-form")
+            return;
+        else{
+            document.getElementById("addmodal").firstChild.nextSibling.remove();
+            document.getElementById("addmodal").appendChild(ui.toDoForm());
+        }
+        
+    }
+    static deleteProject(e){
+        const active=document.querySelector("[data-status='active']");
+        document.getElementById("projlist").firstElementChild.setAttribute("data-status","active");
+        storage.deleteProject(active.textContent);
+        ui.loadProject(document.getElementById("projlist"));
+        ui.loadTasks();
+        
+    }
+    static deleteTask(e){
+        const task=e.target.parentElement.parentElement.firstChild.textContent;
     }
 }
